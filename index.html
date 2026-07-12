@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marine Lens | Fish Identification</title>
+  <meta name="description"
+    content="Marine Lens is a region-first application for fish identification and conservation guidance." />
+  <!-- Fonts and Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#030A16" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <nav class="topbar" aria-label="Application header">
+        <div class="brand-logo-container" aria-hidden="true">
+          <svg class="brand-logo-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <clipPath id="lens-clip">
+              <circle cx="30" cy="30" r="18" />
+            </clipPath>
+            <circle cx="30" cy="30" r="18" stroke="url(#logo-grad)" stroke-width="3.5" fill="#0A1424" />
+            <g clip-path="url(#lens-clip)">
+              <!-- Flowing Ocean Waves -->
+              <path d="M10 42 C 16 38, 20 44, 26 40 C 32 36, 38 42, 44 38 C 47 36, 49 38, 50 39 L50 50 L10 50 Z"
+                fill="#0077B6" opacity="0.6" />
+              <path d="M10 46 C 15 43, 18 47, 24 44 C 30 41, 35 45, 41 42 C 45 40, 48 42, 50 43 L50 50 L10 50 Z"
+                fill="#00D2FF" opacity="0.8" />
+              <!-- Minimalist Fish Silhouette -->
+              <path
+                d="M16 28 C20 25, 26 25, 32 28 C34 29.5, 36 29.5, 38 28 C40 26.5, 39 25, 41 26 L43 29 L41 32 C39 33, 40 31.5, 38 30 C36 28.5, 34 28.5, 32 30 C26 33, 20 33, 16 30 Z"
+                fill="#FFFFFF" />
+              <circle cx="35" cy="28.8" r="1" fill="#0A1424" />
+            </g>
+            <!-- Magnifying Glass Handle -->
+            <path d="M43 43 L55 55" stroke="url(#logo-grad)" stroke-width="4.5" stroke-linecap="round" />
+            <!-- Lens reflection light glint -->
+            <path d="M16 20 A 14 14 0 0 1 36 14" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"
+              opacity="0.3" />
+            <defs>
+              <linearGradient id="logo-grad" x1="12" y1="12" x2="55" y2="55" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#00D2FF" />
+                <stop offset="100%" stop-color="#0077B6" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-text-container">
+          <div class="brand-row">
+            <h1>Marine Lens</h1>
+            <span class="brand-badge">LIVE</span>
+            <span id="modelStatus" class="model-status" data-translate="status-preparing">Preparing offline
+              model...</span>
+          </div>
+          <p data-translate="header-desc">AI-powered catch identification for UAE waters</p>
+        </div>
+        <!-- Language switcher button -->
+        <div class="lang-switcher">
+          <button id="langBtn" class="lang-btn" type="button">
+            <span class="material-symbols-outlined">translate</span>
+            <span id="langText">العربية</span>
+          </button>
+        </div>
+      </nav>
+
+      <section class="intro-card" aria-labelledby="intro-title">
+        <p class="eyebrow" data-translate="intro-eyebrow">A region-first student innovation</p>
+        <h2 id="intro-title" data-translate="intro-title">Identify your catch instantly and learn whether it should be
+          kept, released, or reported.</h2>
+        <p class="intro-copy" data-translate="intro-copy">
+          Upload or take a clear photograph of a fish to identify its species
+          and learn about its conservation status.
+        </p>
+        <div class="guidance-grid" aria-label="Photo guidance">
+          <div class="guidance-item">
+            <span aria-hidden="true">01</span>
+            <p data-translate="guidance-1">Keep the fish clearly visible.</p>
+          </div>
+          <div class="guidance-item">
+            <span aria-hidden="true">02</span>
+            <p data-translate="guidance-2">Use good lighting.</p>
+          </div>
+          <div class="guidance-item">
+            <span aria-hidden="true">03</span>
+            <p data-translate="guidance-3">Avoid blurry or distant images.</p>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section class="upload-panel" aria-labelledby="upload-title">
+        <div class="section-heading">
+          <p class="eyebrow" data-translate="upload-eyebrow">Photo input</p>
+          <h2 id="upload-title" data-translate="upload-title">Add a fish photo</h2>
+        </div>
+
+        <div id="dropZone" class="drop-zone" role="group" tabindex="0" aria-label="Fish photo upload area"
+          aria-describedby="uploadHelp validationMessage">
+          <div id="uploadInstructions" class="upload-instructions">
+            <div class="upload-icon" aria-hidden="true">
+              <span class="material-symbols-outlined">add_a_photo</span>
+            </div>
+            <h3 data-translate="dropzone-title">Drop a photo here</h3>
+            <p id="uploadHelp" data-translate="dropzone-help">
+              JPG, JPEG, PNG, or WEBP files up to 10 MB.
+            </p>
+            <div class="button-row">
+              <button id="choosePhotoButton" class="button primary" type="button">
+                <span class="material-symbols-outlined">photo_library</span>
+                <span data-translate="btn-choose">Choose Photo</span>
+              </button>
+              <button id="takePhotoButton" class="button secondary" type="button">
+                <span class="material-symbols-outlined">photo_camera</span>
+                <span data-translate="btn-take">Take Photo</span>
+              </button>
+            </div>
+          </div>
+
+          <article id="previewCard" class="preview-card hidden" aria-live="polite">
+            <div class="preview-image-wrap">
+              <img id="imagePreview" alt="Selected fish preview" />
+            </div>
+            <div class="preview-meta">
+              <div>
+                <p class="eyebrow" data-translate="preview-eyebrow">Selected image</p>
+                <h3 id="fileName" data-translate="no-image">No image selected</h3>
+              </div>
+              <button id="removeImageButton" class="button ghost" type="button">
+                <span class="material-symbols-outlined">delete</span>
+                <span data-translate="btn-remove">Remove Image</span>
+              </button>
+            </div>
+          </article>
+        </div>
+
+        <input id="photoInput" class="visually-hidden" type="file"
+          accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
+        <input id="cameraInput" class="visually-hidden" type="file"
+          accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" capture="environment" />
+
+        <p id="validationMessage" class="validation-message" aria-live="assertive"></p>
+
+        <div class="action-bar">
+          <button id="identifyButton" class="button identify" type="button" disabled>
+            <span class="material-symbols-outlined">explore</span>
+            <span data-translate="btn-identify">Identify Fish</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="analysisPanel" class="analysis-panel hidden" aria-live="polite">
+        <div class="scanner-container">
+          <div class="scanner">
+            <span></span>
+          </div>
+          <div class="pulse-glow"></div>
+        </div>
+        <div>
+          <p class="eyebrow" data-translate="scanner-eyebrow">Image Classifier</p>
+          <h2 data-translate="scanner-title">Reviewing image features</h2>
+          <p data-translate="scanner-text">
+            Analyzing image features against local marine species database.
+          </p>
+        </div>
+      </section>
+
+      <section id="resultsPanel" class="results-panel hidden" aria-labelledby="resultsTitle">
+        <div class="section-heading">
+          <p class="eyebrow" data-translate="results-eyebrow">Identification result</p>
+          <h2 id="resultsTitle" data-translate="results-title">Likely species</h2>
+        </div>
+
+        <article class="result-card">
+          <div class="result-summary">
+            <div>
+              <p id="resultScientific" class="scientific-name"></p>
+              <h3 id="resultName"></h3>
+            </div>
+            <div class="confidence-ring" aria-label="Mock confidence score">
+              <strong id="confidenceScore">0%</strong>
+              <span data-translate="results-match">match</span>
+            </div>
+          </div>
+
+          <div class="status-strip">
+            <span id="statusPill" class="status-pill"></span>
+            <p id="resultStatus"></p>
+          </div>
+
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span>
+                <span class="material-symbols-outlined">water_drop</span>
+                <span data-translate="label-habitat">Habitat</span>
+              </span>
+              <p id="resultHabitat"></p>
+            </div>
+            <div class="detail-item">
+              <span>
+                <span class="material-symbols-outlined">explore</span>
+                <span data-translate="label-region">Region & Rules</span>
+              </span>
+              <p id="resultRegion"></p>
+            </div>
+            <div class="detail-item">
+              <span>
+                <span class="material-symbols-outlined">eco</span>
+                <span data-translate="label-conservation">Conservation Status</span>
+              </span>
+              <p id="resultConservation"></p>
+            </div>
+            <div class="detail-item">
+              <span>
+                <span class="material-symbols-outlined">gavel</span>
+                <span data-translate="label-guidance">Responsible Guidance</span>
+              </span>
+              <p id="resultGuidance"></p>
+            </div>
+          </div>
+        </article>
+
+        <article class="alternatives-card">
+          <div class="section-heading compact">
+            <p class="eyebrow" data-translate="alt-eyebrow">Other possible matches</p>
+            <h2 data-translate="alt-title">Model alternatives</h2>
+          </div>
+          <div id="alternativeList" class="alternative-list"></div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+  <script src="fish-data.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

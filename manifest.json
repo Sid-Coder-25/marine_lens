@@ -1,0 +1,18 @@
+{
+  "name": "Marine Lens",
+  "short_name": "Marine Lens",
+  "description": "Smart Fish Identification and Conservation Guidance",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#030A16",
+  "theme_color": "#00D2FF",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "assets/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
