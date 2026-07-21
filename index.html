@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marine Lens | Fish Identification</title>
+    <meta
+      name="description"
+      content="Marine Lens is a mobile-first application for fish identification and conservation guidance, inspired by National Geographic."
+    />
+    <!-- Fonts and Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#030A16" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <nav class="topbar" aria-label="Application header">
+          <div class="brand-logo-container" aria-hidden="true">
+            <svg class="brand-logo-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <clipPath id="lens-clip">
+                <circle cx="30" cy="30" r="18" />
+              </clipPath>
+              <circle cx="30" cy="30" r="18" stroke="url(#logo-grad)" stroke-width="3.5" fill="#0A1424" />
+              <g clip-path="url(#lens-clip)">
+                <!-- Flowing Ocean Waves -->
+                <path d="M10 42 C 16 38, 20 44, 26 40 C 32 36, 38 42, 44 38 C 47 36, 49 38, 50 39 L50 50 L10 50 Z" fill="#0077B6" opacity="0.6"/>
+                <path d="M10 46 C 15 43, 18 47, 24 44 C 30 41, 35 45, 41 42 C 45 40, 48 42, 50 43 L50 50 L10 50 Z" fill="#00D2FF" opacity="0.8"/>
+                <!-- Minimalist Fish Silhouette -->
+                <path d="M16 28 C20 25, 26 25, 32 28 C34 29.5, 36 29.5, 38 28 C40 26.5, 39 25, 41 26 L43 29 L41 32 C39 33, 40 31.5, 38 30 C36 28.5, 34 28.5, 32 30 C26 33, 20 33, 16 30 Z" fill="#FFFFFF"/>
+                <circle cx="35" cy="28.8" r="1" fill="#0A1424"/>
+              </g>
+              <!-- Magnifying Glass Handle -->
+              <path d="M43 43 L55 55" stroke="url(#logo-grad)" stroke-width="4.5" stroke-linecap="round" />
+              <!-- Lens reflection light glint -->
+              <path d="M16 20 A 14 14 0 0 1 36 14" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+              <defs>
+                <linearGradient id="logo-grad" x1="12" y1="12" x2="55" y2="55" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#00D2FF" />
+                  <stop offset="100%" stop-color="#0077B6" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div class="brand-text-container">
+            <div class="brand-row">
+              <h1>Marine Lens</h1>
+              <span id="modelStatus" class="model-status" data-translate="status-preparing">Preparing offline model...</span>
+            </div>
+            <p data-translate="header-desc">AI-powered catch identification for UAE waters</p>
+          </div>
+          <!-- Language switcher button -->
+          <div class="lang-switcher">
+            <button id="langBtn" class="lang-btn" type="button">
+              <span class="material-symbols-outlined">translate</span>
+              <span id="langText">العربية</span>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+      <main>
+        <!-- TABS CONTENT SHELL -->
+
+        <!-- 1. IDENTIFY FISH TAB SCREEN -->
+        <div id="identifyScreen" class="tab-content">
+          <section class="intro-card" aria-labelledby="intro-title">
+            <p class="eyebrow" data-translate="intro-eyebrow">A region-first student innovation</p>
+            <h2 id="intro-title" data-translate="intro-title">Identify your catch instantly and learn whether it should be kept, released, or reported.</h2>
+            <p class="intro-copy" data-translate="intro-copy">
+              Upload or take a clear photograph of a fish to identify its species and learn about its conservation status.
+            </p>
+            <div class="guidance-grid" aria-label="Photo guidance">
+              <div class="guidance-item">
+                <span aria-hidden="true">01</span>
+                <p data-translate="guidance-1">Keep the fish clearly visible.</p>
+              </div>
+              <div class="guidance-item">
+                <span aria-hidden="true">02</span>
+                <p data-translate="guidance-2">Use good lighting.</p>
+              </div>
+              <div class="guidance-item">
+                <span aria-hidden="true">03</span>
+                <p data-translate="guidance-3">Avoid blurry or distant images.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="upload-panel" aria-labelledby="upload-title">
+            <div class="section-heading">
+              <p class="eyebrow" data-translate="upload-eyebrow">Photo input</p>
+              <h2 id="upload-title" data-translate="upload-title">Add a fish photo</h2>
+            </div>
+
+            <div id="dropZone" class="drop-zone" role="group" tabindex="0" aria-label="Fish photo upload area" aria-describedby="uploadHelp validationMessage">
+              <div id="uploadInstructions" class="upload-instructions">
+                <div class="upload-icon" aria-hidden="true">
+                  <span class="material-symbols-outlined">add_a_photo</span>
+                </div>
+                <h3 data-translate="dropzone-title">Drop a photo here</h3>
+                <p id="uploadHelp" data-translate="dropzone-help">
+                  JPG, JPEG, PNG, or WEBP files up to 10 MB.
+                </p>
+                <div class="button-row">
+                  <button id="choosePhotoButton" class="button primary" type="button">
+                    <span class="material-symbols-outlined">photo_library</span>
+                    <span data-translate="btn-choose">Choose Photo</span>
+                  </button>
+                  <button id="takePhotoButton" class="button secondary" type="button">
+                    <span class="material-symbols-outlined">photo_camera</span>
+                    <span data-translate="btn-take">Take Photo</span>
+                  </button>
+                </div>
+              </div>
+
+              <article id="previewCard" class="preview-card hidden" aria-live="polite">
+                <div class="preview-image-wrap">
+                  <img id="imagePreview" alt="Selected fish preview" />
+                </div>
+                <div class="preview-meta">
+                  <div>
+                    <p class="eyebrow" data-translate="preview-eyebrow">Selected image</p>
+                    <h3 id="fileName" data-translate="no-image">No image selected</h3>
+                  </div>
+                  <button id="removeImageButton" class="button ghost" type="button">
+                    <span class="material-symbols-outlined">delete</span>
+                    <span data-translate="btn-remove">Remove Image</span>
+                  </button>
+                </div>
+              </article>
+            </div>
+
+            <input id="photoInput" class="visually-hidden" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
+            <input id="cameraInput" class="visually-hidden" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" capture="environment" />
+
+            <p id="validationMessage" class="validation-message" aria-live="assertive"></p>
+
+            <div class="action-bar">
+              <button id="identifyButton" class="button identify" type="button" disabled>
+                <span class="material-symbols-outlined">explore</span>
+                <span data-translate="btn-identify">Identify Fish</span>
+              </button>
+            </div>
+          </section>
+
+          <section id="analysisPanel" class="analysis-panel hidden" aria-live="polite">
+            <div class="scanner-container">
+              <div class="scanner">
+                <span></span>
+              </div>
+              <div class="pulse-glow"></div>
+            </div>
+            <div>
+              <p class="eyebrow" data-translate="scanner-eyebrow">Image Classifier</p>
+              <h2 data-translate="scanner-title">Reviewing image features</h2>
+              <p data-translate="scanner-text">
+                Analyzing image features against local marine species database.
+              </p>
+            </div>
+          </section>
+
+          <section id="resultsPanel" class="results-panel hidden" aria-labelledby="resultsTitle">
+            <div class="section-heading">
+              <p class="eyebrow" data-translate="results-eyebrow">Identification result</p>
+              <h2 id="resultsTitle" data-translate="results-title">Likely species</h2>
+            </div>
+
+            <article class="result-card">
+              <div class="result-summary">
+                <div>
+                  <p id="resultScientific" class="scientific-name"></p>
+                  <h3 id="resultName"></h3>
+                </div>
+                <div class="confidence-ring" aria-label="Confidence score ring">
+                  <strong id="confidenceScore">0%</strong>
+                  <span data-translate="results-match">match</span>
+                </div>
+              </div>
+
+              <div class="status-strip">
+                <span id="statusPill" class="status-pill"></span>
+                <p id="resultStatus"></p>
+              </div>
+
+              <div class="detail-grid">
+                <div class="detail-item">
+                  <span>
+                    <span class="material-symbols-outlined">water_drop</span>
+                    <span data-translate="label-habitat">Habitat</span>
+                  </span>
+                  <p id="resultHabitat"></p>
+                </div>
+                <div class="detail-item">
+                  <span>
+                    <span class="material-symbols-outlined">explore</span>
+                    <span data-translate="label-region">Region & Rules</span>
+                  </span>
+                  <p id="resultRegion"></p>
+                </div>
+                <div class="detail-item">
+                  <span>
+                    <span class="material-symbols-outlined">eco</span>
+                    <span data-translate="label-conservation">Conservation Status</span>
+                  </span>
+                  <p id="resultConservation"></p>
+                </div>
+                <div class="detail-item">
+                  <span>
+                    <span class="material-symbols-outlined">gavel</span>
+                    <span data-translate="label-guidance">Responsible Guidance</span>
+                  </span>
+                  <p id="resultGuidance"></p>
+                </div>
+              </div>
+
+              <!-- Save Log panel inside Results card -->
+              <div class="save-catch-panel">
+                <h4 data-translate="save-catch-heading">Log This Catch</h4>
+                <div class="save-catch-controls">
+                  <div class="outcome-select-group">
+                    <label for="saveOutcomeSelect" data-translate="label-outcome">Outcome:</label>
+                    <select id="saveOutcomeSelect" class="outcome-dropdown">
+                      <option value="Released" data-translate="opt-released" selected>Released</option>
+                      <option value="Kept" data-translate="opt-kept">Kept</option>
+                    </select>
+                  </div>
+                  <div class="qty-group">
+                    <label for="saveQtyInput" data-translate="label-qty">Qty:</label>
+                    <input id="saveQtyInput" type="number" min="1" value="1" class="qty-input" />
+                  </div>
+                  <button id="saveCatchBtn" class="button primary save-btn" type="button">
+                    <span class="material-symbols-outlined">save</span>
+                    <span data-translate="btn-save-log">Save to Dashboard</span>
+                  </button>
+                </div>
+                <p id="saveStatusMsg" class="save-status-msg hidden"></p>
+              </div>
+            </article>
+
+            <article class="alternatives-card">
+              <div class="section-heading compact">
+                <p class="eyebrow" data-translate="alt-eyebrow">Other possible matches</p>
+                <h2 data-translate="alt-title">Model alternatives</h2>
+              </div>
+              <div id="alternativeList" class="alternative-list"></div>
+            </article>
+          </section>
+        </div>
+
+        <!-- 2. CATCH DASHBOARD TAB SCREEN -->
+        <div id="dashboardScreen" class="tab-content hidden">
+          <div class="dashboard-header">
+            <div>
+              <h2 class="dashboard-title" data-translate="dash-title">Catch Dashboard</h2>
+              <p class="dashboard-subtitle" data-translate="dash-subtitle">Overview of fish catch records from this device</p>
+            </div>
+            <div class="records-toolbar">
+              <div class="filter-container">
+                <span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>
+                <select id="dashboardDateFilter" class="date-filter" aria-label="Date range filter">
+                  <option value="7days" data-translate="opt-7days" selected>Last 7 Days</option>
+                  <option value="30days" data-translate="opt-30days">Last 30 Days</option>
+                  <option value="thismonth" data-translate="opt-month">This Month</option>
+                  <option value="alltime" data-translate="opt-all">All Time</option>
+                </select>
+              </div>
+              <button id="exportCsvBtn" class="export-btn" type="button">
+                <span class="material-symbols-outlined" aria-hidden="true">download</span>
+                <span data-translate="btn-export">Export Data (CSV)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 metric overview cards -->
+          <div class="metrics-grid">
+            <div class="metric-card card-total">
+              <div class="metric-info">
+                <div class="metric-icon-wrap bg-blue" aria-hidden="true">
+                  <span class="material-symbols-outlined">sailing</span>
+                </div>
+                <div>
+                  <strong id="metricTotalFish">0</strong>
+                  <p data-translate="card-total-title">Total Fish Recorded</p>
+                </div>
+              </div>
+              <div class="sparkline-container" aria-hidden="true">
+                <svg class="sparkline-svg" viewBox="0 0 100 30" preserveAspectRatio="none">
+                  <path id="sparklineTotal" d="M 0 25 C 20 20, 40 28, 60 15 C 80 18, 90 8, 100 5" fill="none" stroke="var(--accent-cyan)" stroke-width="2" />
+                </svg>
+              </div>
+            </div>
+
+            <div class="metric-card card-species">
+              <div class="metric-info">
+                <div class="metric-icon-wrap bg-green" aria-hidden="true">
+                  <span class="material-symbols-outlined">eco</span>
+                </div>
+                <div>
+                  <strong id="metricSpecies">0</strong>
+                  <p data-translate="card-species-title">Species Identified</p>
+                </div>
+              </div>
+              <div class="sparkline-container" aria-hidden="true">
+                <svg class="sparkline-svg" viewBox="0 0 100 30" preserveAspectRatio="none">
+                  <path id="sparklineSpecies" d="M 0 28 C 20 22, 40 18, 60 20 C 80 12, 90 14, 100 5" fill="none" stroke="var(--safe)" stroke-width="2" />
+                </svg>
+              </div>
+            </div>
+
+            <div class="metric-card card-released">
+              <div class="metric-info">
+                <div class="metric-icon-wrap bg-yellow" aria-hidden="true">
+                  <span class="material-symbols-outlined">undo</span>
+                </div>
+                <div>
+                  <strong id="metricReleased">0</strong>
+                  <p data-translate="card-released-title">Fish Released</p>
+                </div>
+              </div>
+              <div class="sparkline-container" aria-hidden="true">
+                <svg class="sparkline-svg" viewBox="0 0 100 30" preserveAspectRatio="none">
+                  <path id="sparklineReleased" d="M 0 26 C 20 28, 40 20, 60 22 C 80 14, 90 18, 100 8" fill="none" stroke="var(--caution)" stroke-width="2" />
+                </svg>
+              </div>
+            </div>
+
+            <div class="metric-card card-protected">
+              <div class="metric-info">
+                <div class="metric-icon-wrap bg-red" aria-hidden="true">
+                  <span class="material-symbols-outlined">verified_user</span>
+                </div>
+                <div>
+                  <strong id="metricProtected">0</strong>
+                  <p data-translate="card-protected-title">Protected Species Detected</p>
+                </div>
+              </div>
+              <div class="sparkline-container" aria-hidden="true">
+                <svg class="sparkline-svg" viewBox="0 0 100 30" preserveAspectRatio="none">
+                  <path id="sparklineProtected" d="M 0 28 C 20 26, 40 24, 60 28 C 80 20, 90 12, 100 4" fill="none" stroke="var(--danger)" stroke-width="2" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Layout -->
+          <div class="charts-grid">
+            <div class="chart-card">
+              <div class="chart-header">
+                <h3 data-translate="chart-species">Fish Recorded by Species</h3>
+              </div>
+              <div class="chart-body">
+                <div id="speciesBarChart" class="species-chart" aria-live="polite"></div>
+              </div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-header">
+                <h3 data-translate="chart-outcome">Catch Outcome</h3>
+              </div>
+              <div class="chart-body donut-body">
+                <div class="donut-chart-container">
+                  <div id="outcomeDonutChart" class="donut-visual" aria-hidden="true"></div>
+                  <div class="donut-center-label">
+                    <span id="donutTotalCount">0</span>
+                    <p data-translate="label-total-small">Total</p>
+                  </div>
+                </div>
+                <div id="outcomeLegend" class="outcome-legend" aria-live="polite"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sighting Card -->
+          <div class="sighting-row">
+            <div class="protected-sightings-card">
+              <div class="sighting-card-header">
+                <h3 data-translate="sighting-header">Protected Species Sightings</h3>
+                <button id="clearAllRecordsBtn" class="clear-data-btn" type="button">
+                  <span class="material-symbols-outlined" aria-hidden="true">delete_sweep</span>
+                  <span data-translate="btn-clear-all">Clear All</span>
+                </button>
+              </div>
+              <div id="latestSightingContainer" class="sighting-card-body">
+                <!-- Injected via JavaScript -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. GUIDE TAB SCREEN -->
+        <div id="guideScreen" class="tab-content hidden">
+          <section class="intro-card">
+            <h2 data-translate="guide-screen-title">UAE Marine Protection Guide</h2>
+            <p class="intro-copy" data-translate="guide-screen-copy">
+              Explore regulations, sizes, seasonal restrictions, and conservation categories for local Arabian Gulf species.
+            </p>
+            <div class="guidance-grid" style="grid-template-columns: 1fr; margin-top: 20px;">
+              <a class="guidance-item guide-link-card" href="assets/mlmanual.pdf" target="_blank" rel="noopener">
+                <span class="material-symbols-outlined" style="color:var(--accent-cyan)">menu_book</span>
+                <div>
+                  <h4 style="margin: 0; color:var(--text-primary)">Protected Species Manual</h4>
+                  <p style="margin: 4px 0 0; color:var(--text-muted); font-size:0.88rem;">Detailed regional information on sawfish, guitarfish, and sharks.</p>
+                </div>
+              </a>
+              <a
+                class="guidance-item guide-link-card"
+                href="https://u.ae/en/information-and-services/environment-and-energy/animal-welfare/regulating-fishing-practices"
+                target="_blank"
+                rel="noopener"
+              >
+                <span class="material-symbols-outlined" style="color:var(--safe)">gavel</span>
+                <div>
+                  <h4 style="margin: 0; color:var(--text-primary)">Ministry Rules (MOCCAE)</h4>
+                  <p style="margin: 4px 0 0; color:var(--text-muted); font-size:0.88rem;">Abu Dhabi and Dubai seasonal bans, minimum sizes, and recreational license guidelines.</p>
+                </div>
+              </a>
+            </div>
+          </section>
+        </div>
+
+        <!-- 4. MORE TAB SCREEN -->
+        <div id="moreScreen" class="tab-content hidden">
+          <section class="intro-card">
+            <h2 data-translate="more-screen-title">Settings & App Info</h2>
+            <p class="intro-copy" data-translate="more-screen-copy">
+              Manage your local data storage, review neural network model weights, and adjust offline configuration settings.
+            </p>
+            <div class="guidance-grid" style="grid-template-columns: 1fr; margin-top: 20px;">
+              <div class="guidance-item">
+                <span class="material-symbols-outlined" style="color:var(--accent-cyan)">settings</span>
+                <div>
+                  <h4 style="margin: 0; color:var(--text-primary)">Offline Model Cache Settings</h4>
+                  <p style="margin: 4px 0 0; color:var(--text-muted); font-size:0.88rem;">TF.js Model Version: v2.4 (MobileNet backbone)</p>
+                </div>
+              </div>
+              <div class="guidance-item">
+                <span class="material-symbols-outlined" style="color:var(--brand-gold)">info</span>
+                <div>
+                  <h4 style="margin: 0; color:var(--text-primary)">About Marine Lens</h4>
+                  <p style="margin: 4px 0 0; color:var(--text-muted); font-size:0.88rem;">Interactive monographic catalog and regional catch analytics suite.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <!-- Fixed Bottom Navigation bar -->
+      <nav class="bottom-nav" aria-label="Bottom Navigation">
+        <button class="nav-item active" data-tab="identifyScreen" type="button">
+          <span class="nav-item-icon">
+            <span class="material-symbols-outlined" aria-hidden="true">explore</span>
+          </span>
+          <span class="nav-item-label" data-translate="nav-identify">Identify Fish</span>
+        </button>
+        <button class="nav-item" data-tab="dashboardScreen" type="button">
+          <span class="nav-item-icon">
+            <span class="material-symbols-outlined" aria-hidden="true">bar_chart</span>
+          </span>
+          <span class="nav-item-label" data-translate="nav-dashboard">Dashboard</span>
+        </button>
+        <button class="nav-item" data-tab="guideScreen" type="button">
+          <span class="nav-item-icon">
+            <span class="material-symbols-outlined" aria-hidden="true">menu_book</span>
+          </span>
+          <span class="nav-item-label" data-translate="nav-guide">Guide</span>
+        </button>
+        <button class="nav-item" data-tab="moreScreen" type="button">
+          <span class="nav-item-icon">
+            <span class="material-symbols-outlined" aria-hidden="true">settings</span>
+          </span>
+          <span class="nav-item-label" data-translate="nav-more">More</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Script imports -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+    <script src="fish-data.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
